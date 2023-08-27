@@ -9,7 +9,6 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/service/lambda"
-	"github.com/pkg/errors"
 )
 
 type lambdaExecutionManager struct {
@@ -93,10 +92,20 @@ func (l *lambdaExecutionManager) executeFunction(region int, setInvokeConfig boo
 	}
 
 	log.Printf("Invoking Lambda function with UUID=%v\n", lambdaPayload.UUID)
+	time.Sleep(time.Second * 5)
 	_, err = svc.Invoke(params)
-	if err != nil {
-		return errors.Wrap(err, "Failed to execute Lambda function")
+
+	for err != nil {
+		time.Sleep(time.Second * 5)
+		_, err = svc.Invoke(params)
+		if err != nil {
+			log.Printf("Failed to execute Lambda function: %v\n", err)
+		}
 	}
+
+	// if err != nil {
+	// 	return errors.Wrap(err, "Failed to execute Lambda function")
+	// }
 	return nil
 }
 

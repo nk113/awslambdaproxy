@@ -88,6 +88,6 @@ release:
 docker:
 	docker build . -t vdan/awslambdaproxy:$(VERSION) -t vdan/awslambdaproxy:latest
 
-docker-release:
-	docker push vdan/awslambdaproxy:$(VERSION)
-	docker push vdan/awslambdaproxy:latest
+# docker-release:
+# 	docker push vdan/awslambdaproxy:$(VERSION)
+# 	docker push vdan/awslambdaproxy:latest
